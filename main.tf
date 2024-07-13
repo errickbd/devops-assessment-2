@@ -48,7 +48,7 @@ output "s3-bucket-name" {
 }
 resource "aws_dynamodb_table" "tf_dynmodb_state_lock" {
   hash_key = "LockID"
-  name     = "tf_dynmodb_state_lock"
+  name     = "tf_dynmodb_state_lock-errick"
   attribute {
     name = "LockID"
     type = "S"
@@ -77,6 +77,20 @@ resource "aws_security_group" "node_sg1" {
   ingress {
     from_port   = 443
     to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 9876
+    to_port     = 9876
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

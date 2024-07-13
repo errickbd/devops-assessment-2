@@ -1,0 +1,6 @@
+{
+    "ansible.python.interpreterPath": "/Users/errick/default/bin/python",
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json": "file:///Users/errick/code/devops-bravo-cohort/devops-assessment-2/ansible-dir/inventory.yml"
+    }
+}

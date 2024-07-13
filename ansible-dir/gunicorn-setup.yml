@@ -1,0 +1,48 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  gather_facts: no
+  tasks:
+    - name: Copy Gunicorn systemd service file
+      template:
+        src: todolist-flask.service
+        dest: /etc/systemd/system/todolist-flask.service
+      register: gunicorn_service
+
+    - name: Restart todolist-flask service
+      systemd:
+        name: todolist-flask.service
+        state: restarted
+    - name: Enable todolist-flask service to start on boot
+      systemd:
+        name: todolist-flask.service
+        enabled: yes
+
+    - name: Enable and start Gunicorn service
+      systemd:
+        name: todolist-flask
+        state: started
+        enabled: yes
+      when: gunicorn_service.changed
+      notify:
+        - Restart Gunicorn
+
+
+    - name: Ensure execute permissions for gunicorn_config.py
+      file:
+        path: /home/ubuntu/todolist-flask/gunicorn_config.py
+        mode: '+x'
+      register: gunicorn_config_permissions
+
+    - name: Restart Gunicorn
+      systemd:
+        name: todolist-flask
+        state: restarted
+      when: gunicorn_service.changed or gunicorn_config_permissions.changed
+
+  handlers:
+    - name: Restart Gunicorn
+      systemd:
+        name: todolist-flask
+        state: restarted

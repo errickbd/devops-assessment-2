@@ -1,0 +1,34 @@
+---
+- name: Install MySQL and create database
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install MySQL Server
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Install MySQL Python package (required for Ansible MySQL modules)
+      apt:
+        name: python3-mysqldb
+        state: present
+
+    - name: Ensure MySQL service is started and enabled
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Create MySQL database 'errick_local_todo_db'
+      mysql_db:
+        name: errick_local_todo_db
+        state: present
+        login_user: root
+        login_password: "new_password"  # Specify your root password here
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
