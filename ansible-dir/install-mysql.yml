@@ -24,11 +24,18 @@
         state: started
         enabled: yes
 
+    - name: Change MySQL root password
+      mysql_user:
+        name: root
+        password: "new_password"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        check_implicit_admin: yes
+        update_password: always
+
     - name: Create MySQL database 'errick_local_todo_db'
       mysql_db:
         name: errick_local_todo_db
         state: present
         login_user: root
-        login_password: "new_password"  # Specify your root password here
+        login_password: "new_password"
         login_unix_socket: /var/run/mysqld/mysqld.sock
-

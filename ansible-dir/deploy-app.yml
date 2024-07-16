@@ -1,0 +1,43 @@
+---
+- hosts: all
+  become: yes
+  become_user: ubuntu
+  gather_facts: no
+
+  tasks:
+    - name: Change directory to application folder
+      become: yes
+      shell: cd /home/ubuntu/todolist-flask
+
+    - name: Install Python requirements
+      become: yes
+      shell: sudo pip install -r requirements.txt
+      args:
+        chdir: /home/ubuntu/todolist-flask
+
+    # - name: Restart todolist-flask service
+    #   become: yes
+    #   systemd:
+    #     name: todolist-flask.service
+    #     state: restarted
+    #   ignore_errors: yes
+    #   register: restart_result
+
+    - name: Check systemd service status
+      become: yes
+      shell: systemctl status todolist-flask.service
+      register: service_status
+      failed_when: "'Active: active' not in service_status.stdout"
+
+    - name: Run todo.py
+      become: yes
+      shell: python3 todo.py
+      args:
+        chdir: /home/ubuntu/todolist-flask
+      ignore_errors: yes
+
+  handlers:
+    - name: debug service restart result
+      debug:
+        var: restart_result
+

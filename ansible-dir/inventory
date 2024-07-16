@@ -1,5 +1,5 @@
 [webservers]
-targetNode ansible_host=52.14.166.153 ansible_user=ubuntu
+targetNode ansible_host=3.145.17.163 ansible_user=ubuntu
 
 [all:vars]
 ansible_ssh_private_key_file=/Users/errick/Downloads/errick-pem.pem

@@ -27,7 +27,7 @@
         src: gunicorn_config.py.j2  # Assuming you have a Jinja2 template file
         dest: "{{ repo_dir }}/gunicorn_config.py"
       vars:
-        gunicorn_bind: "0.0.0.0:9876"
+        gunicorn_bind: "0.0.0.0:80"
         gunicorn_workers: 4
 
     - debug:
